@@ -121,8 +121,10 @@ class ImageStorageTests(unittest.TestCase):
 
     def test_pages_use_template_assets(self):
         for path in ("/", "/upload", "/images/"):
-            self.assertIn("/static/css/style.css", self.client.get(path).text)
-        for asset in ("/static/css/style.css", "/static/js/upload.js", "/static/img/icon/delete.png"):
+            page = self.client.get(path).text
+            self.assertIn("/static/css/style.css", page)
+            self.assertNotIn("<script", page)
+        for asset in ("/static/css/style.css", "/static/img/icon/delete.png"):
             self.assertEqual(self.client.get(asset).status_code, 200, asset)
         self.assertIn("/images/", self.client.get("/").text)
 
@@ -160,13 +162,15 @@ class ImageStorageTests(unittest.TestCase):
             files={"file": ("photo.png", self.make_image("PNG"), "image/png")},
         )
         name = Path(response.json()["url"]).name
-        self.assertIn(f"data-name='{name}'", self.client.get("/images/").text)
+        self.assertIn(f"action='/delete/{name}'", self.client.get("/images/").text)
 
-        self.assertEqual(self.client.delete(f"/api/images/{name}").status_code, 200)
+        deleted = self.client.post(f"/delete/{name}", follow_redirects=False)
+        self.assertEqual(deleted.status_code, 303)
+        self.assertEqual(deleted.headers["location"], "/images/")
         self.assertFalse((self.images_dir / name).exists())
-        self.assertEqual(self.client.delete(f"/api/images/{name}").status_code, 404)
-        self.assertEqual(self.client.delete("/api/images/app.log").status_code, 400)
-        self.assertEqual(self.client.delete("/api/images/..%2Flogs%2Fapp.log").status_code, 404)
+        self.assertEqual(self.client.post(f"/delete/{name}").status_code, 404)
+        self.assertEqual(self.client.post("/delete/app.log").status_code, 400)
+        self.assertEqual(self.client.post("/delete/..%2Flogs%2Fapp.log").status_code, 404)
 
         log_text = (self.logs_dir / "app.log").read_text(encoding="utf-8")
         self.assertIn(f"Успех: изображение {name} удалено.", log_text)

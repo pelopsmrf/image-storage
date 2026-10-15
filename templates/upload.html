@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Загрузка изображения — Сервер картинок</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +13,6 @@
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
-    <script>document.documentElement.classList.add('js');</script>
 </head>
 
 <body>
@@ -24,34 +24,32 @@
         <a class="upload__tab upload__tab--active" href="/upload">Загрузка</a>
         <a class="upload__tab" href="/images/">Изображения</a>
     </nav>
-    <form class="upload__form" id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-        <div class="upload__dropzone">
-            <div class="upload__icon">
+    <form class="upload__form" action="/upload" method="post" enctype="multipart/form-data">
+        <label class="upload__dropzone" for="file-upload">
+            <span class="upload__icon">
                 <img src="/static/img/icon/upload-cloud.png" alt="">
-            </div>
-            <p class="upload__promt">Выберите файл или перетащите его сюда</p>
-            <p class="upload__info">Поддерживаются только .jpg, .png и .gif. <br>
-                Максимальный размер файла — 5 МБ</p>
-        </div>
-        <div class="upload__button">
+            </span>
+            <span class="upload__promt">Выберите файл или перетащите его на кнопку</span>
+            <span class="upload__info">Поддерживаются только .jpg, .png и .gif. <br>
+                Максимальный размер файла — 5 МБ</span>
             <input class="upload__file-input" type="file" id="file-upload" name="file"
                 accept=".jpg,.png,.gif,image/jpeg,image/png,image/gif" required>
-            <label for="file-upload" class="upload__button-btn">Выбрать файл</label>
-            <button class="upload__button-btn upload__submit" type="submit">Загрузить</button>
+        </label>
+        <div class="upload__button">
+            <button class="upload__button-btn" type="submit">Загрузить</button>
         </div>
-        <p class="upload__message $message_class" id="upload-message" role="status">$message</p>
+        <p class="upload__message $message_class">$message</p>
     </form>
     <div class="upload__container">
         <div class="upload__group">
             <h2 class="upload__title-current">Текущая загрузка</h2>
             <div class="upload__label">
-                <input type="text" class="upload__input" id="current-url" placeholder="https://" value="$current_url"
+                <input type="text" class="upload__input" placeholder="https://" value="$current_url"
                     aria-label="Ссылка на загруженное изображение" readonly>
-                <button class="upload__copy" id="copy-button" type="button" $copy_disabled>COPY</button>
+                <a class="upload__copy $open_class" href="$current_url" target="_blank" rel="noopener">ОТКРЫТЬ</a>
             </div>
         </div>
     </div>
-    <script src="/static/js/upload.js"></script>
 </body>
 
 </html>

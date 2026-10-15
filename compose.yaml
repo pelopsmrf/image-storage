@@ -6,7 +6,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Public address of Nginx, used for direct image links.
       PUBLIC_BASE_URL: http://localhost:8080
     volumes:
       - images:/images
