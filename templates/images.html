@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог изображений — Сервер картинок</title>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <section class="upload__intro">
+        <h2 class="upload__title"><a class="upload__home" href="/">Каталог изображений</a></h2>
+        <p class="upload__description">Все загруженные изображения и прямые ссылки на них.</p>
+    </section>
+    <nav class="upload__tabs">
+        <a class="upload__tab" href="/upload">Загрузка</a>
+        <a class="upload__tab upload__tab--active" href="/images/">Изображения</a>
+    </nav>
+    <section id="file-list-wrapper">
+        $file_list
+    </section>
+    <script src="/static/js/images.js"></script>
+</body>
+
+</html>

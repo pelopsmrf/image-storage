@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Keep the directories in Git, but not generated uploads or logs.
+images/*
+!images/.gitkeep
+logs/*
+!logs/.gitkeep

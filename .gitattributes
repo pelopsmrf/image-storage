@@ -1,0 +1,4 @@
+# Keep LF line endings so Docker and Nginx configs work the same on every OS.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

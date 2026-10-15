@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      # Public address of Nginx, used for direct image links.
+      PUBLIC_BASE_URL: http://localhost:8080
+    volumes:
+      - images:/images
+      - logs:/logs
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - images:/images:ro
+      - ./static:/static:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  images:
+  logs:
