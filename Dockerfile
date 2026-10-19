@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.t
     && mkdir -p /images /logs \
     && chown app:app /app /images /logs
 
-COPY --chown=app:app app.py .
+COPY --chown=app:app app.py db.py ./
 COPY --chown=app:app templates/ templates/
 COPY --chown=app:app static/ static/
 USER app

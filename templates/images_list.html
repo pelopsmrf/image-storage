@@ -18,15 +18,17 @@
 <body>
     <section class="upload__intro">
         <h2 class="upload__title"><a class="upload__home" href="/">Каталог изображений</a></h2>
-        <p class="upload__description">Все загруженные изображения и прямые ссылки на них.</p>
+        <p class="upload__description">Все загруженные изображения, сначала новые.</p>
     </section>
     <nav class="upload__tabs">
         <a class="upload__tab" href="/upload">Загрузка</a>
-        <a class="upload__tab upload__tab--active" href="/images/">Изображения</a>
+        <a class="upload__tab upload__tab--active" href="/images-list">Изображения</a>
     </nav>
-    <section id="file-list-wrapper">
-        $file_list
-    </section>
+    <main class="images">
+        <p class="upload__message images__message $message_class">$message</p>
+        $images_table
+        $pagination
+    </main>
 </body>
 
 </html>

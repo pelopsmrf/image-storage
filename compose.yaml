@@ -1,4 +1,24 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: images_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      TZ: ${TZ:-Europe/Moscow}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d images_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
   app:
     build:
       context: .
@@ -7,9 +27,21 @@ services:
       - "8000:8000"
     environment:
       PUBLIC_BASE_URL: http://localhost:8080
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: images_db
+      DB_USER: postgres
+      DB_PASSWORD: password
+      # Один часовой пояс для app.log, upload_time в базе и скрипта бэкапа на хосте
+      TZ: ${TZ:-Europe/Moscow}
+      PGTZ: ${TZ:-Europe/Moscow}
     volumes:
       - images:/images
-      - logs:/logs
+      # Папка логов с хоста: в тот же app.log пишет скрипт резервного копирования
+      - ./logs:/logs
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   nginx:
@@ -26,4 +58,4 @@ services:
 
 volumes:
   images:
-  logs:
+  db_data:
